@@ -1,0 +1,96 @@
+openapi: 3.0.1
+info:
+  title: 简历生成器插件
+  description: 提供中文简历自动生成服务。用户提交个人信息，即可下载格式化的简历。
+  version: "v1"
+servers:
+  - url: 'http://api.yourdomain.com'
+paths:
+  /create-resume:
+    post:
+      summary: 提交个人信息并生成简历
+      operationId: createResume
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResumeData'
+      responses:
+        '200':
+          description: 简历生成成功，返回下载链接。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResumeResponse'
+components:
+  schemas:
+    ResumeData:
+      type: object
+      properties:
+        name:
+          type: string
+          example: '张三'
+        email:
+          type: string
+          example: 'zhangsan@example.com'
+        education:
+          type: array
+          items:
+            $ref: '#/components/schemas/Education'
+        workExperience:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkExperience'
+        skills:
+          type: array
+          items:
+            type: string
+          example: ['C++', 'JavaScript', 'Public Speaking']
+    Education:
+      type: object
+      properties:
+        schoolName:
+          type: string
+          example: '北京大学'
+        degree:
+          type: string
+          example: '本科'
+        fieldOfStudy:
+          type: string
+          example: '计算机科学'
+        startDate:
+          type: string
+          format: date
+          example: '2014-09-01'
+        endDate:
+          type: string
+          format: date
+          example: '2018-06-30'
+    WorkExperience:
+      type: object
+      properties:
+        companyName:
+          type: string
+          example: '优秀企业'
+        position:
+          type: string
+          example: '软件工程师'
+        startDate:
+          type: string
+          format: date
+          example: '2018-07-01'
+        endDate:
+          type: string
+          format: date
+          example: '2022-06-30'
+        description:
+          type: string
+          example: '负责公司产品的后端开发...'
+    ResumeResponse:
+      type: object
+      properties:
+        downloadUrl:
+          type: string
+          format: uri
+          example: 'http://api.yourdomain.com/download/your_resume.pdf'
